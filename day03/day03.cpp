@@ -48,7 +48,5 @@ int main(int argc, char** argv) {
 	std::string text{readall(input)};
 	input.close();
 
-	std::print("{}\n", parse_mul(text));
-
-	std::print("{}\n", parse_mul(do_remover(text)));
+	std::print("{}, {}\n", parse_mul(text), parse_mul(do_remover(text)));
 }
