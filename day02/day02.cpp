@@ -13,7 +13,7 @@ void reflect(std::vector<int>& v) {
 }
 
 bool check_safe(std::vector<int>& v, const bool error_allowed) {
-	if (*(v.end()-1) < *v.begin()) {
+	if (v.back() < v.front()) {
 		reflect(v);
 	}
 
@@ -34,7 +34,7 @@ bool check_safe(std::vector<int>& v, const bool error_allowed) {
 }
 
 int main(int argc, char** argv) {
-	std::ifstream input{argc > 1 ? argv[1] : "test.txt"};
+	std::ifstream input{argc > 1 ? argv[1] : "input.txt"};
 
 	std::vector<int> counters(2, 0);
 	for (std::string temp; std::getline(input, temp);) {

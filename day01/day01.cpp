@@ -8,7 +8,7 @@ size_t how_often(int x, const std::ranges::range auto& v) {
 }
 
 int main(int argc, char** argv) {
-	std::ifstream input{argc > 1 ? argv[1] : "test.txt"};
+	std::ifstream input{argc > 1 ? argv[1] : "input.txt"};
 	std::vector<int> list1, list2;
 	
 	for (int t1, t2; input >> t1 >> t2; ) {
