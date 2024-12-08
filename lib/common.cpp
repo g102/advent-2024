@@ -1,12 +1,11 @@
 #include "./common.h"
 
-std::vector<int> string_to_vector(std::string& s) {
-	size_t n = std::ranges::count(s, ' ') + 1;
+std::vector<long> string_to_vector(std::string& s) {
 	std::stringstream ss{s};
-	std::vector<int> out(n);
+	std::vector<long> out;
 
-	for (size_t ix = 0; ix < n; ix++) {
-		ss >> out[ix];
+	for (long temp; ss >> temp; ) {
+		out.push_back(temp);
 	}
 	return out;
 }

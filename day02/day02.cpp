@@ -5,14 +5,14 @@
 
 #include "../lib/common.h"
 
-void reflect(std::vector<int>& v) {
+void reflect(std::ranges::range auto& v) {
 	// so that v is always increasing
 	for (auto it = v.rbegin(); it != v.rend(); it++) {
 		*it = *v.begin() - *it;
 	}
 }
 
-bool check_safe(std::vector<int>& v, const bool error_allowed) {
+bool check_safe(std::ranges::range auto& v, const bool error_allowed) {
 	if (v.back() < v.front()) {
 		reflect(v);
 	}
