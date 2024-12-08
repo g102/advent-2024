@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "../lib/common.h"
+#include "common.h"
 
 typedef std::regex_iterator<std::string_view::iterator> sv_iter;
 

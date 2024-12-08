@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "../lib/common.h"
+#include "common.h"
 
 typedef std::vector<long> vec;
 
@@ -54,10 +54,15 @@ bool valid(vec v, bool do_conc = false) {
 
 int main(int argc, char** argv) {
 	std::ifstream input(argc > 1 ? argv[1] : "input.txt");
-	long ctr = 0;
+	long ctr_pt1 = 0, ctr_pt2 = 0;
 	for (std::string temp; getline(input, temp);) {
 		vec data = parse(temp);
-		if (valid(data, true)) ctr += data.front();
+		if (valid(data)) {
+			ctr_pt1 += data.front();
+			ctr_pt2 += data.front();
+		} else if (valid(data, true)) {
+			ctr_pt2 += data.front();
+		}
 	}
-	std::print("{}\n", ctr);
+	std::print("{}, {}\n", ctr_pt1, ctr_pt2);
 }

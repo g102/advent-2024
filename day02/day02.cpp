@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "../lib/common.h"
+#include "common.h"
 
 void reflect(std::ranges::range auto& v) {
 	// so that v is always increasing

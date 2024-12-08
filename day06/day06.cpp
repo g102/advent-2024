@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "../lib/Matrix.h"
-#include "../lib/common.h"
+#include "Matrix.h"
+#include "common.h"
 
 std::map<ssize_t, std::vector<ssize_t>> rules{
 	{0, {-1, 0}}, {1, {0, 1}}, {2, {1, 0}}, {3, {0, -1}}};
