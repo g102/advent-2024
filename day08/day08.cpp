@@ -2,65 +2,79 @@
 
 #include "common.h"
 
-typedef std::tuple<long, long> point;
+typedef std::pair<long, long> point;
+point operator+(const point& lhs, const point& rhs) {
+	return {lhs.first + rhs.first, lhs.second + rhs.second};
+}
+point operator*(const int lhs, const point& rhs) {
+	return {lhs * rhs.first, lhs * rhs.second};
+}
+point operator-(const point& lhs, const point& rhs) {
+	return lhs + (-1 * rhs);
+}
+point operator%(const point& lhs, int rhs) {
+	return {lhs.first % rhs, lhs.second % rhs};
+}
+point operator/(const point& lhs, int rhs) {
+	return {lhs.first / rhs, lhs.second / rhs};
+}
+bool operator==(const point& lhs, int rhs) {
+	return lhs.first == rhs && lhs.second == rhs;
+}
 
-point to_point(long idx, size_t row, size_t col) {
-	return {idx / col, idx % col};
-}
-size_t to_index(point sub, size_t r, size_t c) {
-	return std::get<0>(sub) * c + std::get<1>(sub);
-}
+point to_point(long ix, size_t r, size_t c) { return {ix / c, ix % c}; }
+size_t to_index(point p, size_t r, size_t c) { return p.first * c + p.second; }
 
 void get_anodes(long ix0, long ix1, long r, long c, std::set<long>& cont) {
-	auto checker = [&](long x, long y) {
+	auto in_bounds = [&](point p) {
+		auto [x, y] = p;
 		return 0 <= x && x < r && 0 <= y && y < c;
 	};
 
-	long xt, yt;  // temps;
-	auto [x0, y0] = to_point(ix0, r, c);
-	auto [x1, y1] = to_point(ix1, r, c);
+	point p0 = to_point(ix0, r, c);
+	point p1 = to_point(ix1, r, c);
+	point temp, diff = p1 - p0;
 
-	xt = 2 * x0 - x1, yt = 2 * y0 - y1;
-	if (checker(xt, yt)) cont.insert(to_index({xt, yt}, r, c));
+	temp = 2 * p0 - p1;
+	if (in_bounds(temp)) cont.insert(to_index(temp, r, c));
 
-	xt = 2 * x1 - x0, yt = 2 * y1 - y0;
-	if (checker(xt, yt)) cont.insert(to_index({xt, yt}, r, c));
+	temp = 2 * p1 - p0;
+	if (in_bounds(temp)) cont.insert(to_index(temp, r, c));
 
-	if ((x1 - x0) % 3 == 0 && (y1 - y0) % 3 == 0) {
-		long dx = (x1 - x0) / 3, dy = (y1 - y0) / 3;
+	if (diff % 3 == 0) {
+		diff = diff / 3;
+		temp = p0 + diff;
+		if (in_bounds(temp)) cont.insert(to_index(temp, r, c));
 
-		xt = x0 + dx, yt = y0 + dy;
-		if (checker(xt, yt)) cont.insert(to_index({xt, yt}, r, c));
-
-		xt = x1 - dx, yt = y1 - dy;
-		if (checker(xt, yt)) cont.insert(to_index({xt, yt}, r, c));
+		temp = p0 - diff;
+		if (in_bounds(temp)) cont.insert(to_index(temp, r, c));
 	}
 }
 
 void get_resonant(long ix0, long ix1, long r, long c, std::set<long>& cont) {
-	auto checker = [&](long x, long y) {
+	auto in_bounds = [&](point p) {
+		auto [x, y] = p;
 		return 0 <= x && x < r && 0 <= y && y < c;
 	};
 
-	auto [x0, y0] = to_point(ix0, r, c);
-	auto [x1, y1] = to_point(ix1, r, c);
-
-	long dx = x1 - x0, dy = y1 - y0, xt, yt;
+	point p0 = to_point(ix0, r, c);
+	point p1 = to_point(ix1, r, c);
+	point temp, diff = p1 - p0;
 
 	// away from x0
-	xt = x0, yt = y0;
+	temp = p0;
 	while (true) {
-		xt += dx, yt += dy;
-		if (!checker(xt, yt)) break;
-		cont.insert(to_index({xt, yt}, r, c));
+		temp = temp + diff;
+		if (!in_bounds(temp)) break;
+		cont.insert(to_index(temp, r, c));
 	}
 
 	// away from x1
-	xt = x1, yt = y1;
+	temp = p1;
 	while (true) {
-		xt -= dx, yt -= dy;
-		if (!checker(xt, yt)) break;
-		cont.insert(to_index({xt, yt}, r, c));
+		temp = temp - diff;
+		if (!in_bounds(temp)) break;
+		cont.insert(to_index(temp, r, c));
 	}
 }
 
